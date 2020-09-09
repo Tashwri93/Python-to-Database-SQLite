@@ -1,0 +1,45 @@
+Please install the python dependencies to run the programs successfully:
+
+-wget
+-csv
+-sqlite3
+
+The three python files are as follow:
+
+-downloadin_data.py is used to download the dataset from the website and to convert into a csv file.
+
+-creating_database.py is used to connect to SQLite and create a database call 'Openflights' which will have
+three tables created; Airports, Airlines and Routes.
+
+-loading_database_to_sql.py is the csv files being loaded onto the SQLite database.
+
+Below are some of the queries and solutions that I was able to complete. 
+
+Query 
+Which airline flies to the most destinations (airports)?
+
+Solution
+SELECT Airlines.AirlineID, Airlines.name,  COUNT(*) FROM Airlines
+Inner join Routes on Airlines.AirlineID = Routes.AirlineID
+GROUP BY Routes.AirlineID  HAVING COUNT(*) > 100 ORDER BY COUNT(*) DESC ;
+
+Query
+Which airline flies to the most countries?
+
+Solution
+SELECT Airlines.AirlineID, Airlines.name, COUNT(Country) FROM Airlines
+Inner join Routes on Airlines.AirlineID = Routes.AirlineID
+GROUP BY Routes.DestinationAirportID  HAVING COUNT(*) > 100 ORDER BY COUNT(*) DESC ;
+
+Query
+Which airport serves the most destinations?
+
+Solution
+Select Airports.IATA, Count(SourceAirport) From Airports inner join Routes on Routes.SourceAirport
+= Airports.IATA
+Group by Routes.SourceAirport HAVING COUNT(*) ORDER BY COUNT(*) DESC ;
+
+Different Solution to same Query
+Select Routes.SourceAirport, Count(*) from Routes
+Group by Routes.SourceAirport HAVING COUNT(*) ORDER BY COUNT(*) DESC ;
+
